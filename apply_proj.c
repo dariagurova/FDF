@@ -25,7 +25,7 @@ static int	proj_y(int x, int y, t_env *e)
 {
 	double ret;
 
-	ret = e->map[y][x].z * cos(RAD(18)) / 1.5;
+	ret = e->map[y][x].z * cos(RAD(18)) / 12;
 	ret -= x * sin(RAD(28)) * sin(RAD(48)) +
 	y * sin(RAD(28)) * cos(RAD(48));
 	ret = ret * e->scale.y;

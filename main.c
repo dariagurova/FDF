@@ -18,8 +18,8 @@ static void			init_env(t_env *e)
 		exit_error(2);
 	e->scale.x = 30;
 	e->scale.y = -30;
-	e->pos.x = 550;
-	e->pos.y = 750;
+	e->pos.x = 500;
+	e->pos.y = 500;
 	e->alt = 1;
 	e->color = CQ;
 }
