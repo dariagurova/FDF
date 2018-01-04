@@ -6,7 +6,7 @@
 /*   By: dgurova <dariagurova91@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 17:44:45 by dgurova           #+#    #+#             */
-/*   Updated: 2017/12/27 11:39:46 by dgurova          ###   ########.fr       */
+/*   Updated: 2018/01/03 22:40:14 by dariagurova      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static int		get_height_width(char *filepath, int c)
 	char	*line;
 
 	ret = 0;
-	fd = open(filepath, O_RDONLY);
+	if((fd = open(filepath, O_RDONLY)) < 0)
+	error("Error: File open failed");
 	if (c == 1)
 	{
 		while (get_next_line(fd, &line) > 0)
@@ -77,7 +78,7 @@ void			parse_args(char *filepath, t_env *env)
 	}
 }
 
-static void		smallest_z(t_env *e, int x, int y, int c)
+/*static void		smallest_z(t_env *e, int x, int y, int c)
 {
 	size_t tmp;
 
@@ -103,7 +104,7 @@ static void		smallest_z(t_env *e, int x, int y, int c)
 			y++;
 		}
 	}
-}
+}*/
 
 void			read_file(char *filepath, t_env *env)
 {
@@ -115,14 +116,16 @@ void			read_file(char *filepath, t_env *env)
 
 	x = 0;
 	y = 0;
-	fd = open(filepath, O_RDONLY);
+	if((fd = open(filepath, O_RDONLY)) < 0)
+	error("Error: File open failed");
 	while (get_next_line(fd, &line) > 0)
 	{
-		line_split = ft_strsplit(line, ' ');
+		if((line_split = ft_strsplit(line, ' ')) == NULL)
+			error("Error: No data");
 		while (*line_split != NULL)
 		{
 			env->map[y][x].z = ft_atoi(*line_split);
-			smallest_z(env, x, y, 0);
+			//smallest_z(env, x, y, 0);
 			env->map[y][x].z0 = env->map[y][x].z;
 			x++;
 			line_split++;
@@ -131,5 +134,5 @@ void			read_file(char *filepath, t_env *env)
 		y++;
 	}
 	close(fd);
-	smallest_z(env, 0, 0, 1);
+	//smallest_z(env, 0, 0, 1);
 }

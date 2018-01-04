@@ -6,7 +6,7 @@
 /*   By: dgurova <dariagurova91@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 17:44:09 by dgurova           #+#    #+#             */
-/*   Updated: 2017/12/22 13:46:22 by dgurova          ###   ########.fr       */
+/*   Updated: 2018/01/03 22:40:16 by dariagurova      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,11 @@ void	exit_error(int c)
 		ft_putstr_fd("Error: Map is invalid.\n", 2);
 	if (c == 2)
 		ft_putstr_fd("Error: mlx failed.\n", 2);
+	exit(0);
+}
+
+void	error(char *str)
+{
+	ft_putendl(str);
 	exit(0);
 }
