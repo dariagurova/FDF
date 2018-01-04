@@ -94,5 +94,5 @@ void					ft_draw(t_env *e);
 int						event_mouse(int button, int x, int y, t_env *env);
 int						event_key(int keycode, t_env *env);
 int						event_key_next(int keycode, t_env *e);
-
+void					error(char *str);
 #endif
