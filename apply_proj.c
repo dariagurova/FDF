@@ -12,13 +12,11 @@
 
 #include "fdf.h"
 
-/*static int	proj_x(int x, int y, t_env *e)
+static int	proj_x(int x, int y, t_env *e)
 {
 	double ret;
 
-
-
-	ret = (x * cos(RAD(44))) - y * sin(RAD(21));
+	ret = (x * cos(RAD(45))) - y * sin(RAD(35));
 	ret = ret * e->scale.x;
 	return ((int)ret);
 }
@@ -27,41 +25,10 @@ static int	proj_y(int x, int y, t_env *e)
 {
 	double ret;
 
-	ret = e->map[y][x].z * cos(RAD(21));
-
-
-	x * sin(RAD(42)) * sin(RAD(21)) +
-				y * sin(RAD(21)) * cos(RAD(42)) +
-				e->map[y][x].z * cos(RAD(21));
-
-	ret -= x * sin(RAD(21)) * sin(RAD(42)) +
-				y * sin(RAD(21)) * cos(RAD(42)) +
-				e->map[y][x].z * cos(RAD(21)) / 4;
-
-
-	x * sin(RAD(21)) * cos(RAD(42)) +
-				y * cos(RAD(21)) * cos(RAD(42)) -
-				e->map[y][x].z * sin(RAD(21));
+	ret = e->map[y][x].z * cos(RAD(18)) / 1.5;
+	ret -= x * sin(RAD(28)) * sin(RAD(48)) +
+	y * sin(RAD(28)) * cos(RAD(48));
 	ret = ret * e->scale.y;
-	return ((int)ret);
-}*/
-
-static int	proj_x(int x, int y, t_env *e)
-{
-	double ret;
-
-	ret = (M_SQRT2 / 2) * (x - y);
-	ret *= e->scale.x;
-	return ((int)ret);
-}
-
-static int	proj_y(int x, int y, t_env *e)
-{
-	double ret;
-
-	ret = (sqrt(3 / 2) * e->map[y][x].z);
-	ret -= (1 / sqrt(6) * (x + y));
-	ret *= e->scale.y;
 	return ((int)ret);
 }
 
