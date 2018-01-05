@@ -42,24 +42,28 @@ static int		get_height_width(char *filepath, int c)
 
 	ret = 0;
 	if((fd = open(filepath, O_RDONLY)) < 0)
-	error("Error: File open failed");
+		error("Error: File open failed");
 	if (c == 1)
 	{
 		while (get_next_line(fd, &line) > 0)
+		{
+			free(line);
 			ret++;
-		close(fd);
+		}
 	}
 	else
 	{
 		get_next_line(fd, &line);
+		free(line);
 		ret = count_words(line);
 		while (get_next_line(fd, &line) > 0)
 		{
 			if (count_words(line) != ret)
 				exit_error(1);
+				free(line);
 		}
-		close(fd);
 	}
+	close(fd);
 	return (ret);
 }
 
@@ -105,34 +109,65 @@ void			parse_args(char *filepath, t_env *env)
 		}
 	}
 }*/
+int	valid_read(char *filepath)
+{
+	int fd;
 
+	if((fd = open(filepath, O_RDONLY)) < 0)
+	{
+		error("Error: File opening failed");
+		exit(0);
+	}
+	else if (!valid_file(filepath))
+	{
+		ft_putstr_fd("The extantion of the file is not .fdf\n", 2);
+		exit(0);
+	}
+	return (fd);
+}
+
+/*void	free_line(char **line_split, int c)
+{
+	char **tmp;
+
+	tmp = line_split;
+	if (c == 2)
+	{
+		free(*tmp);
+	}
+
+}*/
 void			read_file(char *filepath, t_env *env)
 {
-	int		fd;
+	//int		fd;
 	char	*line;
 	char	**line_split;
+	char	**temp;
 	int		x;
 	int		y;
 
-	x = 0;
 	y = 0;
-	if((fd = open(filepath, O_RDONLY)) < 0)
-	error("Error: File open failed");
-	while (get_next_line(fd, &line) > 0)
+	if ((env->fd = valid_read(filepath)) > 0)
+	//if((fd = open(filepath, O_RDONLY)) < 0)
+	//error("Error: File open failed");
+	while (get_next_line(env->fd, &line) > 0)
 	{
-		if((line_split = ft_strsplit(line, ' ')) == NULL)
-			error("Error: No data");
+		x = 0;
+		if((line_split = ft_strsplit(line, ' ')) != NULL)
+		free(line);
+		//free_line(line_split, 1);
+		temp = line_split;
 		while (*line_split != NULL)
 		{
 			env->map[y][x].z = ft_atoi(*line_split);
-			//smallest_z(env, x, y, 0);
-			env->map[y][x].z0 = env->map[y][x].z;
+			free(*line_split);
+			//env->map[y][x].z0 = env->map[y][x].z;
 			x++;
 			line_split++;
 		}
-		x = 0;
+		//free_line(line_split, 2);
+		free(temp);
 		y++;
 	}
-	close(fd);
-	//smallest_z(env, 0, 0, 1);
+	close(env->fd);
 }

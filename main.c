@@ -41,6 +41,27 @@ void				pixel_put(t_env *e, int x, int y, int color)
 	mlx_pixel_put(e->mlx, e->win, e->pos.x + x, e->pos.y + y, color);
 }
 
+void free_map(t_point **map, int height)
+{
+	int i;
+
+	i = 0;
+	while (i < height)
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
+}
+
+void free_env(t_env *env)
+{
+	free_map(env->map, env->height);
+	mlx_destroy_window(env->mlx, env->win);
+	free(env->mlx);
+	free(env);
+}
+
 int					main(int ac, char **av)
 {
 	t_env *env;
@@ -65,5 +86,4 @@ int					main(int ac, char **av)
 	mlx_key_hook(env->win, event_key, env);
 	mlx_mouse_hook(env->win, event_mouse, env);
 	mlx_loop(env->mlx);
-	free(env);
 }

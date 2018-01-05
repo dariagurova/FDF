@@ -65,8 +65,9 @@ typedef struct			s_env
 	int					height;
 	int					width;
 	int					alt;
-	size_t				smallest;
+	//size_t				smallest;
 	int					color;
+	int					fd;
 }						t_env;
 
 typedef struct			s_bresen
@@ -95,4 +96,7 @@ int						event_mouse(int button, int x, int y, t_env *env);
 int						event_key(int keycode, t_env *env);
 int						event_key_next(int keycode, t_env *e);
 void					error(char *str);
+void					free_env(t_env *env);
+void					read_file(char *filepath, t_env *env);
+//void					free_line(char **line_split, int c);
 #endif

@@ -44,7 +44,10 @@ int			event_key_next(int keycode, t_env *e)
 int			event_key(int keycode, t_env *e)
 {
 	if (keycode == ESC)
+	{
+		free_env(e);
 		exit(0);
+	}
 	if (keycode == RIGHT)
 		e->pos.x += 30;
 	if (keycode == DOWN)
@@ -84,6 +87,5 @@ int			event_mouse(int button, int x, int y, t_env *e)
 			e->color = CQ;
 		ft_draw(e);
 	}
-	return (1);
 	return (1);
 }
