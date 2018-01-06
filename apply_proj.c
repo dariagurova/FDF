@@ -6,7 +6,7 @@
 /*   By: dgurova <dariagurova91@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 17:45:22 by dgurova           #+#    #+#             */
-/*   Updated: 2018/01/03 23:00:18 by dariagurova      ###   ########.fr       */
+/*   Updated: 2018/01/05 21:40:29 by dariagurova      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	proj_y(int x, int y, t_env *e)
 {
 	double ret;
 
-	ret = e->map[y][x].z * cos(RAD(18)) / 12;
+	ret = e->map[y][x].z * cos(RAD(18)) / 3;
 	ret -= x * sin(RAD(28)) * sin(RAD(48)) +
 	y * sin(RAD(28)) * cos(RAD(48));
 	ret = ret * e->scale.y;

@@ -6,7 +6,7 @@
 /*   By: dgurova <dariagurova91@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/14 14:57:16 by dgurova           #+#    #+#             */
-/*   Updated: 2017/12/22 15:18:04 by dgurova          ###   ########.fr       */
+/*   Updated: 2018/01/05 22:25:48 by dariagurova      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct			s_env
 	int					height;
 	int					width;
 	int					alt;
-	//size_t				smallest;
+	size_t				smallest;
 	int					color;
 	int					fd;
 }						t_env;
@@ -82,7 +82,7 @@ typedef struct			s_bresen
 }						t_bresen;
 
 void					init_ham(t_bresen *ham, t_coord src, t_coord dst);
-void					check_args(int ac);
+void					check_args(int ac, char *filepath);
 int						valid_file(char *str);
 void					parse_args(char *filepath, t_env *env);
 void					read_file(char *filepath, t_env *env);
@@ -95,8 +95,8 @@ void					ft_draw(t_env *e);
 int						event_mouse(int button, int x, int y, t_env *env);
 int						event_key(int keycode, t_env *env);
 int						event_key_next(int keycode, t_env *e);
-void					error(char *str);
+void					error(char *str, int fd);
 void					free_env(t_env *env);
 void					read_file(char *filepath, t_env *env);
-//void					free_line(char **line_split, int c);
+void		valid_symbols(char *line);
 #endif

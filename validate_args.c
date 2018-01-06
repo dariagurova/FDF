@@ -6,13 +6,72 @@
 /*   By: dgurova <dariagurova91@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 17:44:09 by dgurova           #+#    #+#             */
-/*   Updated: 2018/01/03 22:40:16 by dariagurova      ###   ########.fr       */
+/*   Updated: 2018/01/05 22:25:28 by dariagurova      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	check_args(int ac)
+static void		smallest(t_env *e, int x, int y, int c)
+{
+	size_t tmp;
+
+	if (c == 0)
+	{
+		tmp = ft_abs(e->map[y][x].z);
+		if ((!e->smallest && tmp != 0) || (e->smallest > tmp && tmp != 0))
+			e->smallest = tmp;
+	}
+	else
+	{
+		if (!e->smallest)
+			e->smallest = 1;
+		while (y < e->height)
+		{
+			while (x < e->width)
+			{
+				e->map[y][x].z /= e->smallest;
+				e->map[y][x].z0 /= e->smallest;
+				x++;
+			}
+			x = 0;
+			y++;
+		}
+	}
+}
+
+void			read_file(char *filepath, t_env *env)
+{
+	char	*line;
+	char	**line_split;
+	char	**temp;
+	int		x;
+	int		y;
+
+	y = 0;
+	(env->fd = open(filepath, O_RDONLY)) < 0 ? error("Error: Open failed.\n", 2) : env->fd;
+	while (get_next_line(env->fd, &line) > 0)
+	{
+		x = 0;
+		if((line_split = ft_strsplit(line, ' ')) != NULL)
+		free(line);
+		temp = line_split;
+		while (*line_split != NULL)
+		{
+			env->map[y][x].z = ft_atoi(*line_split);
+			free(*line_split);
+			env->map[y][x].z0 = env->map[y][x].z;
+			x++;
+			line_split++;
+		}
+		free(temp);
+		y++;
+	}
+	close(env->fd);
+	smallest(env, 0, 0, 1);
+}
+
+void	check_args(int ac, char *filepath)
 {
 	if (ac != 2)
 	{
@@ -20,20 +79,11 @@ void	check_args(int ac)
 		ft_putstr_fd("Usage: ./fdf file.fdf\n", 2);
 		exit(0);
 	}
-}
-
-int		valid_file(char *str)
-{
-	int		len;
-
-	len = ft_strlen(str);
-	if (str[len - 1] == 'f' &&
-		str[len - 2] == 'd' &&
-		str[len - 3] == 'f' &&
-		str[len - 4] == '.')
-		return (1);
-	else
-		return (0);
+	
+	if (ft_strstr(filepath, ".fdf") == 0)
+	{
+		error("Error: File extention is not .fdf.\n", 2);
+	}
 }
 
 void	exit_error(int c)

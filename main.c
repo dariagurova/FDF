@@ -6,7 +6,7 @@
 /*   By: dgurova <dariagurova91@gmail.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/19 17:43:28 by dgurova           #+#    #+#             */
-/*   Updated: 2017/12/22 13:48:46 by dgurova          ###   ########.fr       */
+/*   Updated: 2018/01/05 20:00:19 by dariagurova      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,7 @@ int					main(int ac, char **av)
 	env = (t_env *)malloc(sizeof(t_env));
 	if (env == NULL)
 		return (1);
-	check_args(ac);
-	if (!valid_file(av[1]))
-	{
-		ft_putstr_fd("The extantion of the file is not .fdf\n", 2);
-		exit(0);
-	}
+	check_args(ac, av[1]);
 	init_env(env);
 	parse_args(av[1], env);
 	read_file(av[1], env);
