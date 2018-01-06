@@ -12,6 +12,11 @@
 
 #include "fdf.h"
 
+void		pixel_put(t_env *e, int x, int y, int color)
+{
+	mlx_pixel_put(e->mlx, e->win, e->pos.x + x, e->pos.y + y, color);
+}
+
 void		draw_line(t_env *e, t_coord src, t_coord dst)
 {
 	t_bresen	ham;

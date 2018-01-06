@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-static void		smallest(t_env *e, int x, int y, int c)
+static void			smallest(t_env *e, int x, int y, int c)
 {
 	size_t tmp;
 
@@ -40,38 +40,35 @@ static void		smallest(t_env *e, int x, int y, int c)
 	}
 }
 
-void			read_file(char *filepath, t_env *env)
+void				read_file(char *filepath, t_env *env)
 {
-	char	*line;
-	char	**line_split;
-	char	**temp;
 	int		x;
 	int		y;
 
 	y = 0;
-	(env->fd = open(filepath, O_RDONLY)) < 0 ? error("Error: Open failed.\n", 2) : env->fd;
-	while (get_next_line(env->fd, &line) > 0)
+	(env->fd = open(filepath, O_RDONLY)) < 0 ? err(3) : env->fd;
+	while (get_next_line(env->fd, &(env->line)) > 0)
 	{
 		x = 0;
-		if((line_split = ft_strsplit(line, ' ')) != NULL)
-		free(line);
-		temp = line_split;
-		while (*line_split != NULL)
+		if ((env->line_split = ft_strsplit(env->line, ' ')) != NULL)
+			free(env->line);
+		env->temp = env->line_split;
+		while (*(env->line_split) != NULL)
 		{
-			env->map[y][x].z = ft_atoi(*line_split);
-			free(*line_split);
+			env->map[y][x].z = ft_atoi(*(env->line_split));
+			smallest(env, x, y, 0);
+			free(*(env->line_split));
 			env->map[y][x].z0 = env->map[y][x].z;
 			x++;
-			line_split++;
+			env->line_split++;
 		}
-		free(temp);
+		free(env->temp);
 		y++;
 	}
-	close(env->fd);
 	smallest(env, 0, 0, 1);
 }
 
-void	check_args(int ac, char *filepath)
+void				check_args(int ac, char *filepath)
 {
 	if (ac != 2)
 	{
@@ -79,23 +76,27 @@ void	check_args(int ac, char *filepath)
 		ft_putstr_fd("Usage: ./fdf file.fdf\n", 2);
 		exit(0);
 	}
-	
 	if (ft_strstr(filepath, ".fdf") == 0)
 	{
 		error("Error: File extention is not .fdf.\n", 2);
 	}
 }
 
-void	exit_error(int c)
+void				err(int c)
 {
 	if (c == 1)
 		ft_putstr_fd("Error: Map is invalid.\n", 2);
-	if (c == 2)
+	else if (c == 2)
+	{
 		ft_putstr_fd("Error: mlx failed.\n", 2);
+		exit(0);
+	}
+	else
+		ft_putstr_fd("Error: File open() failed.\n", 2);
 	exit(0);
 }
 
-void	error(char *str, int fd)
+void				error(char *str, int fd)
 {
 	ft_putstr_fd(str, fd);
 	exit(0);

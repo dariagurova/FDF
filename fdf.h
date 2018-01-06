@@ -68,6 +68,9 @@ typedef struct			s_env
 	size_t				smallest;
 	int					color;
 	int					fd;
+	char				*line;
+	char				**line_split;
+	char				**temp;
 }						t_env;
 
 typedef struct			s_bresen
@@ -86,7 +89,7 @@ void					check_args(int ac, char *filepath);
 int						valid_file(char *str);
 void					parse_args(char *filepath, t_env *env);
 void					read_file(char *filepath, t_env *env);
-void					exit_error(int c);
+void					err(int c);
 void					apply_proj(t_env *env);
 void					apply_height(t_env *e, int c);
 void					draw_lines(t_env *env, int x, int y);
@@ -98,5 +101,5 @@ int						event_key_next(int keycode, t_env *e);
 void					error(char *str, int fd);
 void					free_env(t_env *env);
 void					read_file(char *filepath, t_env *env);
-void		valid_symbols(char *line);
+void					valid_symbols(char *line);
 #endif

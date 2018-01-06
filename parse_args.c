@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-static int		count_words(const char *line)
+static int			count_words(const char *line)
 {
 	int		count;
 	int		i;
@@ -34,14 +34,14 @@ static int		count_words(const char *line)
 	return (count);
 }
 
-static int		get_height_width(char *filepath, int c, t_env *env)
+static int			get_height_width(char *filepath, int c, t_env *env)
 {
 	int		ret;
 	char	*line;
 
 	ret = 0;
-	(env->fd = open(filepath, O_RDONLY)) < 0 ? error("Open failed.\n", 2) : env->fd;
-	if (c == 1) 
+	(env->fd = open(filepath, O_RDONLY)) < 0 ? err(3) : env->fd;
+	if (c == 1)
 		while (get_next_line(env->fd, &line) > 0)
 		{
 			valid_symbols(line);
@@ -56,14 +56,14 @@ static int		get_height_width(char *filepath, int c, t_env *env)
 		while (get_next_line(env->fd, &line) > 0)
 		{
 			if (count_words(line) != ret)
-				exit_error(1);
-				free(line);
+				err(1);
+			free(line);
 		}
 	}
 	return (ret);
 }
 
-void			parse_args(char *filepath, t_env *env)
+void				parse_args(char *filepath, t_env *env)
 {
 	int index;
 
@@ -80,7 +80,7 @@ void			parse_args(char *filepath, t_env *env)
 	}
 }
 
-void		valid_symbols(char *line)
+void				valid_symbols(char *line)
 {
 	int i;
 

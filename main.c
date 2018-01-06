@@ -15,11 +15,11 @@
 static void			init_env(t_env *e)
 {
 	if ((e->mlx = mlx_init()) == (void *)0)
-		exit_error(2);
+		err(2);
 	e->scale.x = 30;
 	e->scale.y = -30;
 	e->pos.x = 500;
-	e->pos.y = 500;
+	e->pos.y = 450;
 	e->alt = 1;
 	e->color = CQ;
 }
@@ -36,12 +36,7 @@ static void			adjust_scale(t_env *e)
 		e->scale.x = -(e->scale.y);
 }
 
-void				pixel_put(t_env *e, int x, int y, int color)
-{
-	mlx_pixel_put(e->mlx, e->win, e->pos.x + x, e->pos.y + y, color);
-}
-
-void free_map(t_point **map, int height)
+void				free_map(t_point **map, int height)
 {
 	int i;
 
@@ -54,7 +49,7 @@ void free_map(t_point **map, int height)
 	free(map);
 }
 
-void free_env(t_env *env)
+void				free_env(t_env *env)
 {
 	free_map(env->map, env->height);
 	mlx_destroy_window(env->mlx, env->win);
@@ -76,7 +71,7 @@ int					main(int ac, char **av)
 	adjust_scale(env);
 	env->win = mlx_new_window(env->mlx, WIN_WIDTH, WIN_HEIGHT, "test");
 	if (env->win == (void *)0)
-		exit_error(2);
+		err(2);
 	ft_draw(env);
 	mlx_key_hook(env->win, event_key, env);
 	mlx_mouse_hook(env->win, event_mouse, env);
