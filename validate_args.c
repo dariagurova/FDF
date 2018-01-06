@@ -45,8 +45,8 @@ void	exit_error(int c)
 	exit(0);
 }
 
-void	error(char *str)
+void	error(char *str, int fd)
 {
-	ft_putendl(str);
+	ft_putstr_fd(str, fd);
 	exit(0);
 }

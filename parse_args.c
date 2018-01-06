@@ -41,12 +41,12 @@ static int		get_height_width(char *filepath, int c)
 	char	*line;
 
 	ret = 0;
-	if((fd = open(filepath, O_RDONLY)) < 0)
-		error("Error: File open failed");
+	(fd = open(filepath, O_RDONLY)) < 0 ? error("Error: Open failed.\n", 2) : fd;
 	if (c == 1)
-	{
+	{ 
 		while (get_next_line(fd, &line) > 0)
 		{
+			valid_symbols(line);
 			free(line);
 			ret++;
 		}
@@ -58,6 +58,7 @@ static int		get_height_width(char *filepath, int c)
 		ret = count_words(line);
 		while (get_next_line(fd, &line) > 0)
 		{
+			valid_symbols(line);
 			if (count_words(line) != ret)
 				exit_error(1);
 				free(line);
@@ -82,51 +83,50 @@ void			parse_args(char *filepath, t_env *env)
 	}
 }
 
-/*static void		smallest_z(t_env *e, int x, int y, int c)
-{
-	size_t tmp;
+ void		valid_symbols(char *line)
 
-	if (c == 0)
-	{
-		tmp = ft_abs(e->map[y][x].z);
-		if ((!e->smallest && tmp != 0) || (e->smallest > tmp && tmp != 0))
-			e->smallest = tmp;
-	}
-	else
-	{
-		if (!e->smallest)
-			e->smallest = 1;
-		while (y < e->height)
+{
+	//int fd;
+	int		i;
+
+	i = 0;
+	//(fd = open(filepath, O_RDONLY)) < 0 ? error("Error: Open failed.\n", 2) : fd;
+	//while (get_next_line(env->fd, &line) > 0)
+	//{
+		//if (!line)
+			//error("Error: Line read.\n", 2);
+
+
+		while (line[i] != '\0')
 		{
-			while (x < e->width)
-			{
-				e->map[y][x].z /= e->smallest;
-				e->map[y][x].z0 /= e->smallest;
-				x++;
-			}
-			x = 0;
-			y++;
+			if ((line[i] == '-' && !(ft_isdigit(line[i + 1]))) ||\
+				line[i] == '\t')
+				error("Error: Found Forbidden Characters.\n", 2);
+			i++;
 		}
-	}
-}*/
-int	valid_read(char *filepath)
+	
+		
+	//}
+}
+
+/*int	valid_read(char *filepath)
 {
 	int fd;
 
 	if((fd = open(filepath, O_RDONLY)) < 0)
 	{
-		error("Error: File opening failed");
-		exit(0);
+		error("Error: File opening failed", 2);
+
 	}
 	else if (!valid_file(filepath))
 	{
-		ft_putstr_fd("The extantion of the file is not .fdf\n", 2);
-		exit(0);
+		error("The extantion of the file is not .fdf\n", 2);
+
 	}
 	return (fd);
 }
 
-/*void	free_line(char **line_split, int c)
+void	free_line(char **line_split, int c)
 {
 	char **tmp;
 
@@ -147,7 +147,7 @@ void			read_file(char *filepath, t_env *env)
 	int		y;
 
 	y = 0;
-	if ((env->fd = valid_read(filepath)) > 0)
+	(env->fd = open(filepath, O_RDONLY)) < 0 ? error("Error: Open failed.\n", 2) : env->fd;
 	//if((fd = open(filepath, O_RDONLY)) < 0)
 	//error("Error: File open failed");
 	while (get_next_line(env->fd, &line) > 0)
